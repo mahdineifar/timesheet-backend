@@ -1,8 +1,11 @@
 package com.timesheet.services.impl;
 
+import com.timesheet.RoleRepository;
 import com.timesheet.dao.UserRepository;
 import com.timesheet.dto.UserAuthDto;
+import com.timesheet.entities.Role;
 import com.timesheet.entities.User;
+import com.timesheet.exceptions.RoleNotFoundException;
 import com.timesheet.exceptions.UsernameAlreadyExistException;
 import com.timesheet.services.IUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static com.timesheet.utils.Constants.*;
@@ -22,10 +26,12 @@ public class UserService implements UserDetailsService, IUserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -46,6 +52,8 @@ public class UserService implements UserDetailsService, IUserService {
         user.setAccountNonLocked(true);
         user.setAccountNonExpired(true);
         user.setCredentialsNonExpired(true);
+        Role role = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RoleNotFoundException(String.format(ROLE_NOT_FOUND, "ROLE_USER")));
+        user.setRoles(Arrays.asList(role));
         userRepository.saveAndFlush(user);
         log.info(USER_CREATED_SUCCESSFULLY, userAuthDto.getUsername());
     }

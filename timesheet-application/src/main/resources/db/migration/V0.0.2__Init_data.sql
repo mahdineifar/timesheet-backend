@@ -1,0 +1,11 @@
+INSERT INTO `timesheet`.`T_USER`
+(`USR_ID`, `USR_ACCOUNT_NON_EXPIRED`, `USR_ACCOUNT_NOT_LOCKED`, `USR_CREDENTIALS_NON_EXPIRED`, `USR_ENABLED`, `USR_FIRST_NAME`, `USR_LAST_NAME`, `USR_PASSWORD`, `USR_USERNAME`)
+VALUES (1, b'1', b'1', b'1', b'1', b'1', 'admin', 'admin', 'admin');
+
+INSERT INTO `t_role` (`ROL_ID`, `ROL_NAME`) VALUES (1, 'ROLE_ADMIN'), (2, 'ROLE_USER');
+
+INSERT INTO `t_authority` (`AUT_ID`, `AUT_NAME`) VALUES (1, 'ADD_USER'), (2, 'ADD_CUSTOMER');
+
+INSERT INTO `jt_user_role` (`USR_ID`, `ROL_ID`) VALUES (1, 1);
+
+INSERT INTO `jt_role_authority` (`ROL_ID`, `AUT_ID`) VALUES (1, 1), (1, 2);
