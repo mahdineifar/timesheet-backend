@@ -1,0 +1,12 @@
+security:
+  oauth2:
+    client:
+      client-id: timesheet
+      client-secret: timesheet-secret
+      scope: read,write
+      auto-approve-scopes: '.*'
+      access-token-validity-seconds: 3600
+      refresh-token-validity-seconds: 7776000
+      authorities: ""
+    authorization:
+      check-token-access: permitAll()
